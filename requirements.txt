@@ -28,6 +28,7 @@ numpy==1.12.1
 pandas==0.19.2
 psycopg2==2.6.1
 python-dateutil==2.4.2
+python-memcached==1.58
 pytz==2015.4
 PyYAML==3.11
 six==1.9.0

@@ -1,29 +1,34 @@
 from .base import *
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+COMPRESS_OFFLINE = True
 
-from fnmatch import fnmatch
+ALLOWED_HOSTS = ['*']
 
-
-class glob_list(list):
-
-    def __contains__(self, key):
-        for elt in self:
-            if fnmatch(key, elt):
-                return True
-        return False
-
-INTERNAL_IPS = glob_list(['127.0.0.1', '10.*.*.*'])
-
-INSTALLED_APPS += (
-    'django_nose',
-    'debug_toolbar',
-)
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
@@ -41,7 +46,7 @@ MIDDLEWARE_CLASSES = (
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/django_cache',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
